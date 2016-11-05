@@ -59,8 +59,17 @@ export default class AwesomeProject extends Component {
               <Blink text='Why did they ever take this out of HTML' />
               <Blink text='Look at me look at me look at me' />
 
-              <Text style={styles.bigblue}>styles bigblue</Text>
+              <Text style={styles.bigblue} onPress={function() {
+                  alert("点击事件")
+              }}>click styles bigblue</Text>
               <Text style={styles.red}>styles red</Text>
+              
+              <Text style={{fontWeight: 'bold'}}>
+                I am bold
+                <Text style={{color: 'red'}}>
+                  and red
+                </Text>
+              </Text>
           </View>
       );
   }
@@ -73,6 +82,13 @@ const styles = StyleSheet.create({
   },
   red: {
     color: 'red',
+  },
+  baseText: {
+    fontFamily: 'Cochin',
+  },
+  titleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
 AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
