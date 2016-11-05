@@ -58,8 +58,21 @@ export default class AwesomeProject extends Component {
               <Blink text='Yes blinking is so great' />
               <Blink text='Why did they ever take this out of HTML' />
               <Blink text='Look at me look at me look at me' />
+
+              <Text style={styles.bigblue}>styles bigblue</Text>
+              <Text style={styles.red}>styles red</Text>
           </View>
       );
   }
 }
+const styles = StyleSheet.create({
+  bigblue: {
+    color: 'blue',
+    fontWeight: 'bold',
+    fontSize: 30,
+  },
+  red: {
+    color: 'red',
+  },
+});
 AppRegistry.registerComponent('AwesomeProject', () => AwesomeProject);
