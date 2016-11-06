@@ -10,7 +10,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  TextInput,
 } from 'react-native';
 //自定义组件
 class Greeting extends Component {
@@ -174,10 +175,33 @@ class FlexboxBasics extends Component {
                   <View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />
                   <View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />
                   <View style={{width: 50, height: 50, backgroundColor: 'steelblue'}} />
-                </View>                
+                </View>
             </View>
         );
     }
+}
+// 处理文本输入
+class PizzaTranslator extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {text: ''};
+  }
+
+  render() {
+    return (
+      <View style={{padding: 10}}>
+        <TextInput
+          style={{height: 40}}
+          placeholder="输入单词转换成披萨"
+          onChangeText={(text) => this.setState({text})}
+        />
+        <Text style={{padding: 10, fontSize: 42}}>
+          {this.state.text.split(' ').map((word) => word && '🍕').join(' ')}
+        </Text>
+        <Text>🍕🍕🍕🍕🍕</Text>
+      </View>
+    );
+  }
 }
 const styles = StyleSheet.create({
   bigblue: {
@@ -196,4 +220,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-AppRegistry.registerComponent('AwesomeProject', () => FlexboxBasics);
+AppRegistry.registerComponent('AwesomeProject', () => PizzaTranslator);
