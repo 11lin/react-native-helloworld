@@ -13,6 +13,7 @@ import {
   Image,
   TextInput,
   ScrollView,
+  ListView,
 } from 'react-native';
 //自定义组件
 class Greeting extends Component {
@@ -243,6 +244,30 @@ class IScrolledDownAndWhatHappenedNextShockedMe extends Component {
     );
   }
 }
+class ListViewBasics extends Component {
+  // 初始化模拟数据
+  constructor(props) {
+    super(props);
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    var data=[]
+    for (var i = 0; i < 100; i++) {
+        data.push("ListView_"+i)
+    }
+    this.state = {
+      dataSource: ds.cloneWithRows(data)
+    };
+  }
+  render() {
+    return (
+      <View style={{flex: 1, paddingTop: 22}}>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={(rowData) => <Text>{rowData}</Text>}
+        />
+      </View>
+    );
+  }
+}
 const styles = StyleSheet.create({
   bigblue: {
     color: 'blue',
@@ -260,4 +285,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-AppRegistry.registerComponent('AwesomeProject', () => IScrolledDownAndWhatHappenedNextShockedMe);
+AppRegistry.registerComponent('AwesomeProject', () => ListViewBasics);
