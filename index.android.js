@@ -250,16 +250,19 @@ class ListViewBasics extends Component {
     super(props);
     const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     var data=[]
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i < 14; i++) {
         data.push("ListView_"+i)
     }
     this.state = {
-      dataSource: ds.cloneWithRows(data)
+      dataSource: ds.cloneWithRows(data),
+      text: 'textsss3'
     };
   }
   render() {
     return (
       <View style={{flex: 1, paddingTop: 22}}>
+        <Text>sss</Text>
+        <Text>{this.state.text}</Text>
         <ListView
           dataSource={this.state.dataSource}
           renderRow={(rowData) => <Text>{rowData}</Text>}
@@ -268,6 +271,78 @@ class ListViewBasics extends Component {
     );
   }
 }
+
+var MOCKED_MOVIES_DATA = [
+    {title: 'Title', releaseYear: '2015', posters: {thumbnail: 'http://i.imgur.com/UePbdph.jpg'}},
+];
+class MoviesHttpNetwork extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state={
+            movies: null,
+            dataSource: new ListView.DataSource({
+              rowHasChanged: (row1, row2) => row1 !== row2,
+            }),
+            loaded: false,
+        }
+    }
+    fetchData() {
+        var url="http://facebook.github.io/react-native/movies.json";
+        fetch(url)
+          .then((response) => response.json())
+          .then((responseData) => {
+            this.setState({
+                dataSource: this.state.dataSource.cloneWithRows(responseData.movies),
+                loaded: true,
+            });
+          })
+          .done();
+    }
+    // 组件初始完成回调
+    componentDidMount() {
+        this.fetchData();
+    }
+    // getInitialState() {
+    //     return {
+    //       movies: null,
+    //     };
+    //   }
+    renderLoadingView() {
+        return (
+          <View style={styles.moviesContainer}>
+            <Text>
+              Loading movies...
+            </Text>
+          </View>
+        );
+    }
+    renderMovie(movie) {
+        return (
+         <View style={styles.moviesContainer}>
+             <Image style={styles.moviesThumbnail} source={{uri: 'http://i.imgur.com/UePbdph.jpg'}} />
+             <View style={styles.moviesRightContainer}>
+                 <Text style={styles.moviesTitle}>{movie.title}</Text>
+                 <Text style={styles.moviesYear}>{movie.releaseYear}</Text>
+             </View>
+         </View>
+       );
+    }
+    render() {
+        if (!this.state.loaded) {
+            return this.renderLoadingView();
+        }
+        // return this.renderMovie(MOCKED_MOVIES_DATA[0]);
+        return (
+          <ListView
+            dataSource={this.state.dataSource}
+            renderRow={this.renderMovie}
+            style={styles.moviesListView}
+          />
+        );
+     }
+}
+
 const styles = StyleSheet.create({
   bigblue: {
     color: 'blue',
@@ -284,5 +359,31 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  moviesContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  moviesThumbnail: {
+    width: 53,
+    height: 81,
+  },
+  moviesRightContainer: {
+      flex: 1,
+  },
+    moviesTitle: {
+      fontSize: 20,
+      marginBottom: 8,
+      textAlign: 'center',
+    },
+    moviesYear: {
+      textAlign: 'center',
+    },
+    moviesListView: {
+       paddingTop: 20,
+       backgroundColor: '#F5FCFF',
+     },
 });
-AppRegistry.registerComponent('AwesomeProject', () => ListViewBasics);
+AppRegistry.registerComponent('AwesomeProject', () => MoviesHttpNetwork);
